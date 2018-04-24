@@ -25,17 +25,22 @@ window.requestAnimFrame = (function () {
 })();
 
 //sounds
-var soundJump = new Audio("wing.ogg");
-var soundScore = new Audio("point.ogg");
-var soundHit = new Audio("hit.ogg");
-var soundDie = new Audio("die.ogg");
-var soundSwoosh = new Audio("swooshing.ogg");
+var soundJump = wx.createInnerAudioContext();
+soundJump.src = "audio/wing.ogg";
+var soundScore = wx.createInnerAudioContext();
+soundScore.src = "audio/point.ogg";
+var soundHit = wx.createInnerAudioContext();
+soundHit.src = "audio/hit.ogg";
+var soundDie = wx.createInnerAudioContext();
+soundDie.src = "audio/die.ogg";
+var soundSwoosh = wx.createInnerAudioContext();
+soundSwoosh.src = "audio/swooshing.ogg";
   //http://www.storiesinflight.com/html5/audio.html
 var channel_max = 10; // number of channels
 var audiochannels = new Array();
 for (var a = 0; a < channel_max; a++) { // prepare the channels
     audiochannels[a] = new Array();
-    audiochannels[a]['channel'] = new Audio(); // create a new audio object
+    audiochannels[a]['channel'] = wx.createInnerAudioContext(); // create a new audio object
     audiochannels[a]['finished'] = -1; // expected end time for this channel
 }
 
@@ -45,7 +50,7 @@ function play_sound(s) {
         if (audiochannels[a]['finished'] < thistime.getTime()) { // is this channel finished?
             audiochannels[a]['finished'] = thistime.getTime() + s.duration * 1000;
             audiochannels[a]['channel'].src = s.src;
-            audiochannels[a]['channel'].load();
+            // audiochannels[a]['channel'].load();
             audiochannels[a]['channel'].play();
             break;
         }
@@ -750,7 +755,7 @@ window.GameOver = function(){
   this.getMedal = function()
   {
     var score = FB.score.coins;
-    console.log(score)
+    console.log("score: "+score)
     var medal = "";
     if(score <= 10)
       medal = "bronze";
@@ -825,6 +830,6 @@ window.GameOver = function(){
 
 FB.init();
 
-window.addEventListener('load', FB.init, false);
-window.addEventListener('resize', FB.resize, false);
+// window.addEventListener('load', FB.init, false);
+// window.addEventListener('resize', FB.resize, false);
 
